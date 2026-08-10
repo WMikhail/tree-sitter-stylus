@@ -1,0 +1,17 @@
+[package]
+name = "tree-sitter-stylus"
+version = "0.1.0"
+edition = "2021"
+description = "Stylus grammar for the tree-sitter parsing library"
+authors = ["WMikhail"]
+repository = "https://github.com/WMikhail/tree-sitter-stylus"
+license = "MIT"
+
+[lib]
+path = "bindings/rust/lib.rs"
+
+[dependencies]
+tree-sitter-language = "0.1"
+
+[build-dependencies]
+cc = "1.1"

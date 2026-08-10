@@ -1,0 +1,56 @@
+==================
+Tabs and mixed indentation
+==================
+.container
+	color red
+	.child
+	  width 10px
+---
+
+(stylesheet
+  (rule_set
+    (selector_list
+      (selector
+        (class_name)))
+    (block
+      (declaration
+        (property_name)
+        (expression
+          (variable_name
+            (identifier))))
+      (rule_set
+        (nested_selector_list
+          (nested_selector
+            (class_name)))
+        (block
+          (declaration
+            (property_name)
+            (expression
+              (number_value
+                (integer_value)
+                (unit)))))))))
+
+==================
+Dedents at end of file
+==================
+.outer
+  .inner
+    color red
+---
+
+(stylesheet
+  (rule_set
+    (selector_list
+      (selector
+        (class_name)))
+    (block
+      (rule_set
+        (nested_selector_list
+          (nested_selector
+            (class_name)))
+        (block
+          (declaration
+            (property_name)
+            (expression
+              (variable_name
+                (identifier)))))))))

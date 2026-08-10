@@ -1,0 +1,1856 @@
+==================
+Selectors and declarations
+==================
+.app
+  color #fff
+  padding 10px
+  .button
+    display block
+---
+
+(stylesheet
+  (rule_set
+    (selector_list
+      (selector
+        (class_name)))
+    (block
+      (declaration
+        (property_name)
+        (expression
+          (color_value)))
+      (declaration
+        (property_name)
+        (expression
+          (number_value
+            (integer_value)
+            (unit))))
+      (rule_set
+        (nested_selector_list
+          (nested_selector
+            (class_name)))
+        (block
+          (declaration
+            (property_name)
+            (expression
+              (variable_name
+                (identifier)))))))))
+
+==================
+Comments and blank lines
+==================
+// App variables
+
+@import 'common.variables'
+
+// Component styles
+.card
+  // Nested note
+  color #fff
+---
+
+(stylesheet
+  (comment)
+  (import_statement
+    (string_value))
+  (comment)
+  (rule_set
+    (selector_list
+      (selector
+        (class_name)))
+    (block
+      (comment)
+      (declaration
+        (property_name)
+        (expression
+          (color_value))))))
+
+==================
+Quasar value and selector patterns
+==================
+$shadow-transition ?= box-shadow .28s cubic-bezier(.4, 0, .2, 1)
+$shadow-up-4 = 0 -2px 4px -1px $elevation-umbra, 0 -4px 5px $elevation-penumbra
+
+active-color($color)
+  if luminosity($color) > .29
+    darken($color, 10%)
+  else
+    lighten($color, 30%)
+
+.q-btn
+  -webkit-appearance button
+  &--fade
+    &-enter-active, &-leave-active
+      transition opacity .4s ease-out
+---
+
+(stylesheet
+  (assignment
+    (variable_name
+      (dollar_identifier))
+    (expression
+      (variable_name
+        (identifier)))
+    (expression
+      (number_value
+        (float_value)
+        (unit)))
+    (expression
+      (call_expression
+        (function_name)
+        (arguments
+          (expression
+            (number_value
+              (float_value)))
+          (expression
+            (number_value
+              (integer_value)))
+          (expression
+            (number_value
+              (float_value)))
+          (expression
+            (number_value
+              (integer_value)))))))
+  (assignment
+    (variable_name
+      (dollar_identifier))
+    (expression
+      (number_value
+        (integer_value)))
+    (expression
+      (unary_expression
+        (expression
+          (number_value
+            (integer_value)
+            (unit)))))
+    (expression
+      (binary_expression
+        (expression
+          (number_value
+            (integer_value)
+            (unit)))
+        (expression
+          (number_value
+            (integer_value)
+            (unit)))))
+    (expression
+      (variable_name
+        (dollar_identifier)))
+    (expression
+      (binary_expression
+        (expression
+          (number_value
+            (integer_value)))
+        (expression
+          (number_value
+            (integer_value)
+            (unit)))))
+    (expression
+      (number_value
+        (integer_value)
+        (unit)))
+    (expression
+      (variable_name
+        (dollar_identifier))))
+  (function_statement
+    (function_name)
+    (parameters
+      (parameter
+        (variable_name
+          (dollar_identifier))))
+    (block
+      (if_statement
+        (expression
+          (binary_expression
+            (expression
+              (call_expression
+                (function_name)
+                (arguments
+                  (expression
+                    (variable_name
+                      (dollar_identifier))))))
+            (expression
+              (number_value
+                (float_value)))))
+        (block
+          (expression_statement
+            (expression
+              (call_expression
+                (function_name)
+                (arguments
+                  (expression
+                    (variable_name
+                      (dollar_identifier)))
+                  (expression
+                    (number_value
+                      (integer_value)
+                      (unit))))))))
+        (else_clause
+          (block
+            (expression_statement
+              (expression
+                (call_expression
+                  (function_name)
+                  (arguments
+                    (expression
+                      (variable_name
+                        (dollar_identifier)))
+                    (expression
+                      (number_value
+                        (integer_value)
+                        (unit))))))))))))
+  (rule_set
+    (selector_list
+      (selector
+        (class_name)))
+    (block
+      (declaration
+        (property_name)
+        (expression
+          (variable_name
+            (identifier))))
+      (rule_set
+        (nested_selector_list
+          (nested_selector
+            (nesting_selector_with_suffix
+              (nesting_selector)
+              (selector_suffix))))
+        (block
+          (rule_set
+            (nested_selector_list
+              (nested_selector
+                (nesting_selector_with_suffix
+                  (nesting_selector)
+                  (selector_suffix)))
+              (nested_selector
+                (nesting_selector_with_suffix
+                  (nesting_selector)
+                  (selector_suffix))))
+            (block
+              (declaration
+                (property_name)
+                (expression
+                  (variable_name
+                    (identifier)))
+                (expression
+                  (number_value
+                    (float_value)
+                    (unit)))
+                (expression
+                  (variable_name
+                    (identifier)))))))))))
+
+==================
+Nested CSS brace rules and keyframe selector lists
+==================
+.card {
+  color: red;
+  .title {
+    color: blue;
+  }
+  &:hover {
+    color: green;
+  }
+}
+
+@keyframes pulse {
+  0%, 50%, 100% {
+    opacity: 1;
+  }
+}
+---
+
+(stylesheet
+  (rule_set
+    (selector_list
+      (selector
+        (class_name)))
+    (css_declaration_block
+      (declaration
+        (property_name)
+        (raw_css_value))
+      (rule_set
+        (nested_selector_list
+          (nested_selector
+            (class_name)))
+        (css_declaration_block
+          (declaration
+            (property_name)
+            (raw_css_value))))
+      (rule_set
+        (nested_selector_list
+          (nested_selector
+            (nesting_selector)
+            (pseudo_class)))
+        (css_declaration_block
+          (declaration
+            (property_name)
+            (raw_css_value))))))
+  (keyframes_statement
+    (keyframes_name)
+    (keyframes_block
+      (keyframe_block
+        (keyframe_selector
+          (number_value
+            (integer_value)
+            (unit)))
+        (keyframe_selector
+          (number_value
+            (integer_value)
+            (unit)))
+        (keyframe_selector
+          (number_value
+            (integer_value)
+            (unit)))
+        (css_declaration_block
+          (declaration
+            (property_name)
+            (raw_css_value)))))))
+
+==================
+Interpolated properties and assignment operators
+==================
+vendor(prop, args)
+  -webkit-{prop} args
+  {prop} args
+  border-{prop}-radius 4px
+
+primary := white
+n = 12
+n += 8
+n -= 2
+n *= 3
+n /= 2
+n %= 5
+---
+
+(stylesheet
+  (function_statement
+    (function_name)
+    (parameters
+      (parameter
+        (variable_name
+          (identifier)))
+      (parameter
+        (variable_name
+          (identifier))))
+    (block
+      (declaration
+        (interpolated_property_name
+          (property_name)
+          (interpolation
+            (expression
+              (variable_name
+                (identifier)))))
+        (expression
+          (variable_name
+            (identifier))))
+      (declaration
+        (interpolated_property_name
+          (interpolation
+            (expression
+              (variable_name
+                (identifier)))))
+        (expression
+          (variable_name
+            (identifier))))
+      (declaration
+        (interpolated_property_name
+          (property_name)
+          (interpolation
+            (expression
+              (variable_name
+                (identifier))))
+          (property_name))
+        (expression
+          (number_value
+            (integer_value)
+            (unit))))))
+  (assignment
+    (variable_name
+      (identifier))
+    (expression
+      (variable_name
+        (identifier))))
+  (assignment
+    (variable_name
+      (identifier))
+    (expression
+      (number_value
+        (integer_value))))
+  (assignment
+    (variable_name
+      (identifier))
+    (expression
+      (number_value
+        (integer_value))))
+  (assignment
+    (variable_name
+      (identifier))
+    (expression
+      (number_value
+        (integer_value))))
+  (assignment
+    (variable_name
+      (identifier))
+    (expression
+      (number_value
+        (integer_value))))
+  (assignment
+    (variable_name
+      (identifier))
+    (expression
+      (number_value
+        (integer_value))))
+  (assignment
+    (variable_name
+      (identifier))
+    (expression
+      (number_value
+        (integer_value)))))
+
+==================
+Nested pseudo-classes and unary operators
+==================
+.card:not(:nth-child(2n + 1))
+  color red
+
+positive = +1
+inverted = ~mask
+spaced-positive = + value
+spaced-inverted = ~ mask
+---
+
+(stylesheet
+  (rule_set
+    (selector_list
+      (selector
+        (class_name)
+        (pseudo_class)))
+    (block
+      (declaration
+        (property_name)
+        (expression
+          (variable_name
+            (identifier))))))
+  (assignment
+    (variable_name
+      (identifier))
+    (expression
+      (unary_expression
+        (expression
+          (number_value
+            (integer_value))))))
+  (assignment
+    (variable_name
+      (identifier))
+    (expression
+      (unary_expression
+        (expression
+          (variable_name
+            (identifier))))))
+  (assignment
+    (variable_name
+      (identifier))
+    (expression
+      (unary_expression
+        (expression
+          (variable_name
+            (identifier))))))
+  (assignment
+    (variable_name
+      (identifier))
+    (expression
+      (unary_expression
+        (expression
+          (variable_name
+            (identifier)))))))
+
+==================
+Keyframes with interpolation and ranges
+==================
+$keyframe-name = pulse
+
+@keyframes {$keyframe-name}
+  for i in 0..10
+    {10% * i}
+      opacity (i / 10)
+---
+
+(stylesheet
+  (assignment
+    (variable_name
+      (dollar_identifier))
+    (expression
+      (variable_name
+        (identifier))))
+  (keyframes_statement
+    (interpolation
+      (expression
+        (variable_name
+          (dollar_identifier))))
+    (block
+      (for_statement
+        (identifier)
+        (expression
+          (binary_expression
+            (expression
+              (number_value
+                (integer_value)))
+            (expression
+              (number_value
+                (integer_value)))))
+        (block
+          (rule_set
+            (nested_selector_list
+              (nested_selector
+                (selector_interpolation
+                  (expression
+                    (binary_expression
+                      (expression
+                        (number_value
+                          (integer_value)
+                          (unit)))
+                      (expression
+                        (variable_name
+                          (identifier))))))))
+            (block
+              (declaration
+                (property_name)
+                (expression
+                  (parenthesized_expression
+                    (expression
+                      (binary_expression
+                        (expression
+                          (variable_name
+                            (identifier)))
+                        (expression
+                          (number_value
+                            (integer_value)))))))))))))))
+
+==================
+Extends
+==================
+.message
+  padding 10px
+
+.warning
+  @extends .message
+  color #E2E21E
+---
+
+(stylesheet
+  (rule_set
+    (selector_list
+      (selector
+        (class_name)))
+    (block
+      (declaration
+        (property_name)
+        (expression
+          (number_value
+            (integer_value)
+            (unit))))))
+  (rule_set
+    (selector_list
+      (selector
+        (class_name)))
+    (block
+      (extend_statement
+        (extend_target_list
+          (extend_target
+            (nested_selector
+              (class_name)))))
+      (declaration
+        (property_name)
+        (expression
+          (color_value))))))
+
+==================
+Variables and default parameters
+==================
+$site-width = 70%
+
+wrapper($site-width = 70%)
+  margin: 0 auto
+  width: $site-width
+---
+
+(stylesheet
+  (assignment
+    (variable_name
+      (dollar_identifier))
+    (expression
+      (number_value
+        (integer_value)
+        (unit))))
+  (function_statement
+    (function_name)
+    (parameters
+      (parameter
+        (variable_name
+          (dollar_identifier))
+        (expression
+          (number_value
+            (integer_value)
+            (unit)))))
+    (block
+      (declaration
+        (property_name)
+        (expression
+          (number_value
+            (integer_value)))
+        (expression
+          (variable_name
+            (identifier))))
+      (declaration
+        (property_name)
+        (expression
+          (variable_name
+            (dollar_identifier)))))))
+
+==================
+Named arguments and selector interpolation
+==================
+subtract(a, b)
+  return a - b
+
+$selectors = "#foo,#bar,.baz"
+
+{$selectors}
+  width subtract(b: 10, a: 25)
+---
+
+(stylesheet
+  (function_statement
+    (function_name)
+    (parameters
+      (parameter
+        (variable_name
+          (identifier)))
+      (parameter
+        (variable_name
+          (identifier))))
+    (block
+      (return_statement
+        (expression
+          (binary_expression
+            (expression
+              (variable_name
+                (identifier)))
+            (expression
+              (variable_name
+                (identifier))))))))
+  (assignment
+    (variable_name
+      (dollar_identifier))
+    (expression
+      (string_value)))
+  (rule_set
+    (selector_list
+      (selector
+        (selector_interpolation
+          (expression
+            (variable_name
+              (dollar_identifier))))))
+    (block
+      (declaration
+        (property_name)
+        (call_expression
+          (function_name)
+          (arguments
+            (expression
+              (feature_query
+                (property_name)
+                (expression
+                  (number_value
+                    (integer_value)))))
+            (expression
+              (feature_query
+                (property_name)
+                (expression
+                  (number_value
+                    (integer_value)))))))))))
+
+==================
+Media queries and selector groups
+==================
+#header, #main, #footer
+  width: 100%
+
+@media screen and (max-width: 480px)
+  #header, #main, #footer
+    float: none
+---
+
+(stylesheet
+  (rule_set
+    (selector_list
+      (selector
+        (id_name))
+      (selector
+        (id_name))
+      (selector
+        (id_name)))
+    (block
+      (declaration
+        (property_name)
+        (expression
+          (number_value
+            (integer_value)
+            (unit))))))
+  (media_statement
+    (media_query
+      (raw_css_value)
+      (media_feature
+        (property_name)
+        (expression
+          (number_value
+            (integer_value)
+            (unit)))))
+    (block
+      (rule_set
+        (nested_selector_list
+          (nested_selector
+            (id_name))
+          (nested_selector
+            (id_name))
+          (nested_selector
+            (id_name)))
+        (block
+          (declaration
+            (property_name)
+            (expression
+              (variable_name
+                (identifier)))))))))
+
+==================
+Nested bare tag selectors
+==================
+.layout
+  section
+    color red
+---
+
+(stylesheet
+  (rule_set
+    (selector_list
+      (selector
+        (class_name)))
+    (block
+      (rule_set
+        (nested_selector_list
+          (nested_selector
+            (tag_name)))
+        (block
+          (declaration
+            (property_name)
+            (expression
+              (variable_name
+                (identifier)))))))))
+
+==================
+Assignments and conditionals
+==================
+primary = #3498db
+
+if primary
+  .app
+    color primary
+else
+  .app
+    color #000
+---
+
+(stylesheet
+  (assignment
+    (variable_name
+      (identifier))
+    (expression
+      (color_value)))
+  (if_statement
+    (expression
+      (variable_name
+        (identifier)))
+    (block
+      (rule_set
+        (nested_selector_list
+          (nested_selector
+            (class_name)))
+        (block
+          (declaration
+            (property_name)
+            (expression
+              (variable_name
+                (identifier)))))))
+    (else_clause
+      (block
+        (rule_set
+          (nested_selector_list
+            (nested_selector
+              (class_name)))
+          (block
+            (declaration
+              (property_name)
+              (expression
+                (color_value)))))))))
+
+==================
+Bare selectors and id selectors
+==================
+body
+  color #fff
+#app
+  margin 0
+---
+
+(stylesheet
+  (rule_set
+    (selector_list
+      (selector
+        (tag_name)))
+    (block
+      (declaration
+        (property_name)
+        (expression
+          (color_value)))))
+  (rule_set
+    (selector_list
+      (selector
+        (id_name)))
+    (block
+      (declaration
+        (property_name)
+        (expression
+          (number_value
+            (integer_value)))))))
+
+==================
+Expression coverage
+==================
+size = 10px
+
+.box
+  width size + 5px
+  opacity (1 - 0.2)
+  color darken(#fff, 10%)
+---
+
+(stylesheet
+  (assignment
+    (variable_name
+      (identifier))
+    (expression
+      (number_value
+        (integer_value)
+        (unit))))
+  (rule_set
+    (selector_list
+      (selector
+        (class_name)))
+    (block
+      (declaration
+        (property_name)
+        (expression
+          (binary_expression
+            (expression
+              (variable_name
+                (identifier)))
+            (expression
+              (number_value
+                (integer_value)
+                (unit))))))
+      (declaration
+        (property_name)
+        (expression
+          (parenthesized_expression
+            (expression
+              (binary_expression
+                (expression
+                  (number_value
+                    (integer_value)))
+                (expression
+                  (number_value
+                    (float_value))))))))
+      (declaration
+        (property_name)
+        (call_expression
+          (function_name)
+          (arguments
+            (expression
+              (color_value))
+            (expression
+              (number_value
+                (integer_value)
+                (unit)))))))))
+
+==================
+Nested properties
+==================
+.card
+  font
+    size 12px
+    weight bold
+---
+
+(stylesheet
+  (rule_set
+    (selector_list
+      (selector
+        (class_name)))
+    (block
+      (nested_declaration
+        (property_name)
+        (block
+          (declaration
+            (property_name)
+            (expression
+              (number_value
+                (integer_value)
+                (unit))))
+          (declaration
+            (property_name)
+            (expression
+              (variable_name
+                (identifier)))))))))
+
+==================
+CSS functions and spaced units
+==================
+.hero
+  font: 14 px Helvetica
+  border: 1 px solid #eee
+  background url(images/tobi.png)
+  background-image linear-gradient(to top, #fff, #000)
+  width calc(100% - 2rem)
+---
+
+(stylesheet
+  (rule_set
+    (selector_list
+      (selector
+        (class_name)))
+    (block
+      (group_declaration
+        (property_name)
+        (expression
+          (number_value
+            (integer_value)
+            (unit)))
+        (expression
+          (variable_name
+            (identifier))))
+      (group_declaration
+        (property_name)
+        (expression
+          (number_value
+            (integer_value)
+            (unit)))
+        (expression
+          (variable_name
+            (identifier)))
+        (expression
+          (color_value)))
+      (declaration
+        (property_name)
+        (expression
+          (css_function_expression
+            (function_name)
+            (css_function_arguments
+              (raw_css_value)
+              (raw_css_value)))))
+      (declaration
+        (property_name)
+        (expression
+          (css_function_expression
+            (function_name)
+            (css_function_arguments
+              (raw_css_value)
+              (expression
+                (color_value))
+              (expression
+                (color_value))))))
+      (declaration
+        (property_name)
+        (expression
+          (css_function_expression
+            (function_name)
+            (css_function_arguments
+              (raw_css_value))))))))
+
+==================
+Placeholder selectors and optional extends
+==================
+$message
+  color #fff
+
+.btn
+  @extend .design !optional, $message !optional
+  background #000
+---
+
+(stylesheet
+  (rule_set
+    (selector_list
+      (selector
+        (placeholder_selector)))
+    (block
+      (declaration
+        (property_name)
+        (expression
+          (color_value)))))
+  (rule_set
+    (selector_list
+      (selector
+        (class_name)))
+    (block
+      (extend_statement
+        (extend_target_list
+          (extend_target
+            (nested_selector
+              (class_name))
+            (optional_modifier))
+          (extend_target
+            (nested_selector
+              (placeholder_selector))
+            (optional_modifier))))
+      (declaration
+        (property_name)
+        (expression
+          (color_value))))))
+
+==================
+Pseudo-class functions
+==================
+button:not(.ghost)
+  color #fff
+
+li:nth-child(2n+1)
+  margin 0
+---
+
+(stylesheet
+  (rule_set
+    (selector_list
+      (selector
+        (tag_name)
+        (pseudo_class)))
+    (block
+      (declaration
+        (property_name)
+        (expression
+          (color_value)))))
+  (rule_set
+    (selector_list
+      (selector
+        (tag_name)
+        (pseudo_class)))
+    (block
+      (declaration
+        (property_name)
+        (expression
+          (number_value
+            (integer_value)))))))
+
+==================
+Font face
+==================
+@font-face
+  font-family "Inter"
+  src url("/fonts/inter.woff2")
+  font-weight 400
+---
+
+(stylesheet
+  (font_face_statement
+    (at_keyword)
+    (block
+      (declaration
+        (property_name)
+        (expression
+          (string_value)))
+      (declaration
+        (property_name)
+        (expression
+          (css_function_expression
+            (function_name)
+            (css_function_arguments
+              (expression
+                (string_value))))))
+      (declaration
+        (property_name)
+        (expression
+          (number_value
+            (integer_value)))))))
+
+==================
+Keyframes from and to
+==================
+@keyframes fade
+  from
+    opacity 0
+  to
+    opacity 1
+---
+
+(stylesheet
+  (keyframes_statement
+    (keyframes_name)
+    (block
+      (rule_set
+        (nested_selector_list
+          (nested_selector
+            (tag_name)))
+        (block
+          (declaration
+            (property_name)
+            (expression
+              (number_value
+                (integer_value))))))
+      (rule_set
+        (nested_selector_list
+          (nested_selector
+            (tag_name)))
+        (block
+          (declaration
+            (property_name)
+            (expression
+              (number_value
+                (integer_value)))))))))
+
+==================
+Supports, universal selectors, and nesting selectors
+==================
+bp = 640px
+
+@supports (display: grid)
+  .card
+    &:hover
+      color #fff
+
+*
+  box-sizing border-box
+---
+
+(stylesheet
+  (assignment
+    (variable_name
+      (identifier))
+    (expression
+      (number_value
+        (integer_value)
+        (unit))))
+  (supports_statement
+    (expression
+      (parenthesized_expression
+        (expression
+          (feature_query
+            (property_name)
+            (expression
+              (variable_name
+                (identifier)))))))
+    (block
+      (rule_set
+        (nested_selector_list
+          (nested_selector
+            (class_name)))
+        (block
+          (rule_set
+            (nested_selector_list
+              (nested_selector
+                (nesting_selector)
+                (pseudo_class)))
+            (block
+              (declaration
+                (property_name)
+                (expression
+                  (color_value)))))))))
+  (rule_set
+    (selector_list
+      (selector
+        (universal_selector)))
+    (block
+      (declaration
+        (property_name)
+        (expression
+          (variable_name
+            (identifier)))))))
+
+==================
+Each loops with index and selector interpolation
+==================
+items = 1
+$selector = body
+
+each item, index in items
+  {$selector}
+    order index
+---
+
+(stylesheet
+  (assignment
+    (variable_name
+      (identifier))
+    (expression
+      (number_value
+        (integer_value))))
+  (assignment
+    (variable_name
+      (dollar_identifier))
+    (expression
+      (variable_name
+        (identifier))))
+  (each_statement
+    (identifier)
+    (identifier)
+    (expression
+      (variable_name
+        (identifier)))
+    (block
+      (rule_set
+        (nested_selector_list
+          (nested_selector
+            (selector_interpolation
+              (expression
+                (variable_name
+                  (dollar_identifier))))))
+        (block
+          (declaration
+            (property_name)
+            (expression
+              (variable_name
+                (identifier)))))))))
+
+==================
+Imports, attribute selectors, and pseudo-elements
+==================
+@import "reset"
+
+[data-theme="dark"]
+  color #fff
+
+button::before
+  content "x"
+---
+
+(stylesheet
+  (import_statement
+    (string_value))
+  (rule_set
+    (selector_list
+      (selector
+        (attribute_selector
+          (attribute_name)
+          (string_value))))
+    (block
+      (declaration
+        (property_name)
+        (expression
+          (color_value)))))
+  (rule_set
+    (selector_list
+      (selector
+        (tag_name)
+        (pseudo_element)))
+    (block
+      (declaration
+        (property_name)
+        (expression
+          (string_value))))))
+
+==================
+Media features, custom properties, and deep selectors
+==================
+@media only screen and (max-width 500px)
+  :root
+    --q-color-primary $primary
+  /deep/ .q-if-inner
+    > .row
+      max-width 100%
+---
+
+(stylesheet
+  (media_statement
+    (media_query
+      (raw_css_value)
+      (media_feature
+        (property_name)
+        (expression
+          (number_value
+            (integer_value)
+            (unit)))))
+    (block
+      (rule_set
+        (nested_selector_list
+          (nested_selector
+            (pseudo_class)))
+        (block
+          (declaration
+            (property_name)
+            (expression
+              (variable_name
+                (dollar_identifier))))))
+      (rule_set
+        (nested_selector_list
+          (nested_selector
+            (deep_combinator)
+            (class_name)))
+        (block
+          (rule_set
+            (nested_selector_list
+              (nested_selector
+                (combinator_selector
+                  (combinator)
+                  (class_name))))
+            (block
+              (declaration
+                (property_name)
+                (expression
+                  (number_value
+                    (integer_value)
+                    (unit)))))))))))
+
+==================
+Comma-separated values and brace keyframes
+==================
+@font-face
+  src url('a.otf') format('opentype'),
+  url('a.ttf') format('truetype')
+
+@keyframes zoom-in-fixed {
+  0% {
+    opacity: 0;
+    transform: scale(0);
+  }
+  100% {
+    opacity: 1;
+  }
+}
+---
+
+(stylesheet
+  (font_face_statement
+    (at_keyword)
+    (block
+      (declaration
+        (property_name)
+        (expression
+          (css_function_expression
+            (function_name)
+            (css_function_arguments
+              (expression
+                (string_value)))))
+        (call_expression
+          (function_name)
+          (arguments
+            (expression
+              (string_value))))
+        (expression
+          (css_function_expression
+            (function_name)
+            (css_function_arguments
+              (expression
+                (string_value)))))
+        (call_expression
+          (function_name)
+          (arguments
+            (expression
+              (string_value)))))))
+  (keyframes_statement
+    (keyframes_name)
+    (keyframes_block
+      (keyframe_block
+        (keyframe_selector
+          (number_value
+            (integer_value)
+            (unit)))
+        (css_declaration_block
+          (declaration
+            (property_name)
+            (raw_css_value))
+          (declaration
+            (property_name)
+            (raw_css_function)
+            (raw_css_value))))
+      (keyframe_block
+        (keyframe_selector
+          (number_value
+            (integer_value)
+            (unit)))
+        (css_declaration_block
+          (declaration
+            (property_name)
+            (raw_css_value)))))))
+
+==================
+Root mixins, brace rules, and multiline CSS functions
+==================
+get_default_item_styles()
+configure_theme(12px, primary)
+
+.zoomIn {
+  animation-name zoom-in-fixed !important
+}
+
+.review:before
+  background linear-gradient(
+    to top,
+    rgba(0,0,0,0.8) 0%,
+    rgba(0,0,0,0) 100%
+  )
+---
+
+(stylesheet
+  (call_expression
+    (function_name)
+    (arguments))
+  (call_expression
+    (function_name)
+    (arguments
+      (expression
+        (number_value
+          (integer_value)
+          (unit)))
+      (expression
+        (variable_name
+          (identifier)))))
+  (rule_set
+    (selector_list
+      (selector
+        (class_name)))
+    (css_declaration_block
+      (declaration
+        (property_name)
+        (raw_css_value))))
+  (rule_set
+    (selector_list
+      (selector
+        (class_name)
+        (pseudo_class)))
+    (block
+      (declaration
+        (property_name)
+        (expression
+          (css_function_expression
+            (function_name)
+            (css_function_arguments
+              (raw_css_value)
+              (raw_css_function)
+              (raw_css_value)
+              (raw_css_function)
+              (raw_css_value))))))))
+
+==================
+Leading sibling combinators
+==================
+.card
+  + div
+    margin-left 10px
+  +span
+    opacity 1
+  ~.tight
+    visibility hidden
+  &.active
+    color red
+    + .badge
+      display inline-block
+---
+
+(stylesheet
+  (rule_set
+    (selector_list
+      (selector
+        (class_name)))
+    (block
+      (rule_set
+        (nested_selector_list
+          (nested_selector
+            (combinator_selector
+              (combinator)
+              (tag_name))))
+        (block
+          (declaration
+            (property_name)
+            (expression
+              (number_value
+                (integer_value)
+                (unit))))))
+      (rule_set
+        (nested_selector_list
+          (nested_selector
+            (combinator_selector
+              (combinator)
+              (tag_name))))
+        (block
+          (declaration
+            (property_name)
+            (expression
+              (number_value
+                (integer_value))))))
+      (rule_set
+        (nested_selector_list
+          (nested_selector
+            (combinator_selector
+              (combinator)
+              (class_name))))
+        (block
+          (declaration
+            (property_name)
+            (expression
+              (variable_name
+                (identifier))))))
+      (rule_set
+        (nested_selector_list
+          (nested_selector
+            (nesting_selector)
+            (class_name)))
+        (block
+          (declaration
+            (property_name)
+            (expression
+              (variable_name
+                (identifier))))
+          (rule_set
+            (nested_selector_list
+              (nested_selector
+                (combinator_selector
+                  (combinator)
+                  (class_name))))
+            (block
+              (declaration
+                (property_name)
+                (expression
+                  (variable_name
+                    (identifier)))))))))))
+
+==================
+Documented operators and postfix conditionals
+==================
+fallback = color is defined ? color : white
+is-unit = 15 is a 'unit'
+different = a is not b
+same = a isnt b
+power = 2 ** 8
+
+negative(n)
+  error('invalid number') unless n is a 'unit'
+  return yes if n < 0
+
+body
+  width (5 + 5)px
+  margin-left -(@width / 2)
+  z-index 1 unless @z-index
+---
+
+(stylesheet
+  (assignment
+    (variable_name
+      (identifier))
+    (expression
+      (ternary_expression
+        (expression
+          (defined_expression
+            (variable_name
+              (identifier))))
+        (expression
+          (variable_name
+            (identifier)))
+        (expression
+          (variable_name
+            (identifier))))))
+  (assignment
+    (variable_name
+      (identifier))
+    (expression
+      (binary_expression
+        (expression
+          (number_value
+            (integer_value)))
+        (is_a_operator)
+        (expression
+          (string_value)))))
+  (assignment
+    (variable_name
+      (identifier))
+    (expression
+      (binary_expression
+        (expression
+          (variable_name
+            (identifier)))
+        (is_not_operator)
+        (expression
+          (variable_name
+            (identifier))))))
+  (assignment
+    (variable_name
+      (identifier))
+    (expression
+      (binary_expression
+        (expression
+          (variable_name
+            (identifier)))
+        (expression
+          (variable_name
+            (identifier))))))
+  (assignment
+    (variable_name
+      (identifier))
+    (expression
+      (binary_expression
+        (expression
+          (number_value
+            (integer_value)))
+        (expression
+          (number_value
+            (integer_value))))))
+  (function_statement
+    (function_name)
+    (parameters
+      (parameter
+        (variable_name
+          (identifier))))
+    (block
+      (postfix_statement
+        (call_expression
+          (function_name)
+          (arguments
+            (expression
+              (string_value))))
+        (postfix_condition_clause
+          (expression
+            (binary_expression
+              (expression
+                (variable_name
+                  (identifier)))
+              (is_a_operator)
+              (expression
+                (string_value))))))
+      (postfix_statement
+        (return_statement
+          (expression
+            (boolean_value)))
+        (postfix_condition_clause
+          (expression
+            (binary_expression
+              (expression
+                (variable_name
+                  (identifier)))
+              (expression
+                (number_value
+                  (integer_value)))))))))
+  (rule_set
+    (selector_list
+      (selector
+        (tag_name)))
+    (block
+      (declaration
+        (property_name)
+        (expression
+          (cast_expression
+            (expression
+              (binary_expression
+                (expression
+                  (number_value
+                    (integer_value)))
+                (expression
+                  (number_value
+                    (integer_value)))))
+            (unit))))
+      (declaration
+        (property_name)
+        (expression
+          (unary_expression
+            (expression
+              (parenthesized_expression
+                (expression
+                  (binary_expression
+                    (expression
+                      (property_lookup))
+                    (expression
+                      (number_value
+                        (integer_value))))))))))
+      (postfix_statement
+        (declaration
+          (property_name)
+          (expression
+            (number_value
+              (integer_value))))
+        (postfix_condition_clause
+          (expression
+            (property_lookup)))))))
+
+==================
+Lists, indexed loops, rest parameters, and blocks
+==================
+dimensions =
+  width 20px
+  height 20px
+
+declarations = @block {
+  width: 20px
+  height: 20px
+}
+
+box-shadow(args...)
+  box-shadow args
+
+body
+  fonts = Impact Arial sans-serif
+  for font, index in fonts
+    font-family font
+    order index
+
+sum(1 2 3)
+---
+
+(stylesheet
+  (block_assignment
+    (variable_name
+      (identifier))
+    (block
+      (declaration
+        (property_name)
+        (expression
+          (number_value
+            (integer_value)
+            (unit))))
+      (declaration
+        (property_name)
+        (expression
+          (number_value
+            (integer_value)
+            (unit))))))
+  (assignment
+    (variable_name
+      (identifier))
+    (expression
+      (block_literal
+        (css_declaration_block
+          (declaration
+            (property_name)
+            (raw_css_value))
+          (declaration
+            (property_name)
+            (raw_css_value))))))
+  (function_statement
+    (function_name)
+    (parameters
+      (parameter
+        (variable_name
+          (identifier))))
+    (block
+      (declaration
+        (property_name)
+        (expression
+          (variable_name
+            (identifier))))))
+  (rule_set
+    (selector_list
+      (selector
+        (tag_name)))
+    (block
+      (assignment
+        (variable_name
+          (identifier))
+        (expression
+          (variable_name
+            (identifier)))
+        (expression
+          (variable_name
+            (identifier)))
+        (expression
+          (variable_name
+            (identifier))))
+      (for_statement
+        (identifier)
+        (identifier)
+        (expression
+          (variable_name
+            (identifier)))
+        (block
+          (declaration
+            (property_name)
+            (expression
+              (variable_name
+                (identifier))))
+          (declaration
+            (property_name)
+            (expression
+              (variable_name
+                (identifier))))))))
+  (call_expression
+    (function_name)
+    (arguments
+      (expression
+        (number_value
+          (integer_value)))
+      (expression
+        (number_value
+          (integer_value)))
+      (expression
+        (number_value
+          (integer_value))))))
+
+==================
+Generic at-rules and CSS literals
+==================
+@viewport
+  color #00f
+
+@page :blank
+  @top-center
+    content none
+
+@foo
+  @bar
+    width 10px
+
+@css {
+  .ie-opacity {
+    filter: progid:DXImageTransform.Microsoft.Alpha(opacity=25);
+  }
+}
+---
+
+(stylesheet
+  (generic_at_rule
+    (at_keyword)
+    (block
+      (declaration
+        (property_name)
+        (expression
+          (color_value)))))
+  (generic_at_rule
+    (at_keyword)
+    (at_rule_prelude)
+    (block
+      (generic_at_rule
+        (at_keyword)
+        (block
+          (declaration
+            (property_name)
+            (expression
+              (variable_name
+                (identifier))))))))
+  (generic_at_rule
+    (at_keyword)
+    (block
+      (generic_at_rule
+        (at_keyword)
+        (block
+          (declaration
+            (property_name)
+            (expression
+              (number_value
+                (integer_value)
+                (unit))))))))
+  (css_literal_statement
+    (css_declaration_block
+      (rule_set
+        (nested_selector_list
+          (nested_selector
+            (class_name)))
+        (css_declaration_block
+          (declaration
+            (property_name)
+            (raw_css_function)
+            (raw_css_value)))))))

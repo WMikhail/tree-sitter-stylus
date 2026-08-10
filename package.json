@@ -1,0 +1,44 @@
+{
+  "name": "tree-sitter-stylus",
+  "version": "0.1.0",
+  "description": "Tree-sitter grammar for Stylus",
+  "author": "WMikhail",
+  "main": "bindings/node",
+  "keywords": [
+    "parser",
+    "stylus",
+    "tree-sitter"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/WMikhail/tree-sitter-stylus.git"
+  },
+  "homepage": "https://github.com/WMikhail/tree-sitter-stylus#readme",
+  "bugs": {
+    "url": "https://github.com/WMikhail/tree-sitter-stylus/issues"
+  },
+  "files": [
+    "grammar.js",
+    "binding.gyp",
+    "prebuilds/**",
+    "bindings/node/*",
+    "bindings/rust/*",
+    "queries/*",
+    "src/**"
+  ],
+  "dependencies": {
+    "nan": "^2.19.0",
+    "node-gyp-build": "^4.8.2"
+  },
+  "scripts": {
+    "generate": "tree-sitter generate",
+    "test": "tree-sitter test",
+    "check": "tree-sitter generate && tree-sitter test",
+    "fuzz": "tree-sitter fuzz --iterations 100"
+  },
+  "devDependencies": {
+    "stylus": "0.64.0",
+    "tree-sitter-cli": "^0.25.3"
+  }
+}
