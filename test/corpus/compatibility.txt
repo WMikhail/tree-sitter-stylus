@@ -1,0 +1,666 @@
+==================
+semicolons and dedents
+==================
+@import "./tokens";
+.a
+  width: 100%;
+  content:counter(item);
+  font-size:24px;
+  position:absolute;
+  a:hover
+  // comment before the body
+    color:red;
+  @extend a:hover
+.b
+  height 20px;
+.c { color:red; width:100%; }
+---
+
+(stylesheet
+  (import_statement
+    (string_value))
+  (rule_set
+    (selector_list
+      (selector
+        (class_name)))
+    (block
+      (declaration
+        (property_name)
+        (expression
+          (number_value
+            (integer_value)
+            (unit))))
+      (declaration
+        (property_name)
+        (call_expression
+          (function_name)
+          (arguments
+            (expression
+              (variable_name
+                (identifier))))))
+      (declaration
+        (property_name)
+        (expression
+          (number_value
+            (integer_value)
+            (unit))))
+      (declaration
+        (property_name)
+        (expression
+          (variable_name
+            (identifier))))
+      (rule_set
+        (nested_selector_list
+          (nested_selector
+            (tag_name)
+            (pseudo_class)))
+        (block
+          (comment)
+          (declaration
+            (property_name)
+            (expression
+              (variable_name
+                (identifier))))))
+      (extend_statement
+        (extend_target_list
+          (extend_target
+            (nested_selector
+              (tag_name)
+              (pseudo_class)))))))
+  (rule_set
+    (selector_list
+      (selector
+        (class_name)))
+    (block
+      (declaration
+        (property_name)
+        (expression
+          (number_value
+            (integer_value)
+            (unit))))))
+  (rule_set
+    (selector_list
+      (selector
+        (class_name)))
+    (css_declaration_block
+      (declaration
+        (property_name)
+        (raw_css_value))
+      (declaration
+        (property_name)
+        (raw_css_value)))))
+
+==================
+selector groups and braces in comments
+==================
+.a
+  color:red // {
+  a:hover,
+  a:focus
+    color blue
+  a:is(.x)
+  a:not(.y)
+    color green
+  a:custom,
+  a:other
+    color black
+  #abc,
+  #def
+    color #fff
+  #abcd
+  #defa
+    color #abcd
+.tabbed
+	#abc,
+	#def
+		color #fff
+---
+
+(stylesheet
+  (rule_set
+    (selector_list
+      (selector
+        (class_name)))
+    (block
+      (declaration
+        (property_name)
+        (expression
+          (variable_name
+            (identifier))))
+      (comment)
+      (rule_set
+        (nested_selector_list
+          (nested_selector
+            (tag_name)
+            (pseudo_class))
+          (nested_selector
+            (tag_name)
+            (pseudo_class)))
+        (block
+          (declaration
+            (property_name)
+            (expression
+              (variable_name
+                (identifier))))))
+      (rule_set
+        (nested_selector_list
+          (nested_selector
+            (tag_name)
+            (pseudo_class))
+          (nested_selector
+            (tag_name)
+            (pseudo_class)))
+        (block
+          (declaration
+            (property_name)
+            (expression
+              (variable_name
+                (identifier))))))
+      (rule_set
+        (nested_selector_list
+          (nested_selector
+            (tag_name)
+            (pseudo_class))
+          (nested_selector
+            (tag_name)
+            (pseudo_class)))
+        (block
+          (declaration
+            (property_name)
+            (expression
+              (variable_name
+                (identifier))))))
+      (rule_set
+        (nested_selector_list
+          (nested_selector
+            (id_name))
+          (nested_selector
+            (id_name)))
+        (block
+          (declaration
+            (property_name)
+            (expression
+              (color_value)))))
+      (rule_set
+        (nested_selector_list
+          (nested_selector
+            (id_name))
+          (nested_selector
+            (id_name)))
+        (block
+          (declaration
+            (property_name)
+            (expression
+              (color_value)))))))
+  (rule_set
+    (selector_list
+      (selector
+        (class_name)))
+    (block
+      (rule_set
+        (nested_selector_list
+          (nested_selector
+            (id_name))
+          (nested_selector
+            (id_name)))
+        (block
+          (declaration
+            (property_name)
+            (expression
+              (color_value))))))))
+
+==================
+space-separated lists
+==================
+$x = 2px
+$y = 3px
+.a
+  margin "-%s -%s" % ($x $y)
+  flex 0 0 "calc((100% - %s) / %s)" % (($x * ($y - 1)) ($y))
+---
+
+(stylesheet
+  (assignment
+    (variable_name
+      (dollar_identifier))
+    (expression
+      (number_value
+        (integer_value)
+        (unit))))
+  (assignment
+    (variable_name
+      (dollar_identifier))
+    (expression
+      (number_value
+        (integer_value)
+        (unit))))
+  (rule_set
+    (selector_list
+      (selector
+        (class_name)))
+    (block
+      (declaration
+        (property_name)
+        (expression
+          (binary_expression
+            (expression
+              (string_value))
+            (expression
+              (parenthesized_expression
+                (expression
+                  (variable_name
+                    (dollar_identifier)))
+                (expression
+                  (variable_name
+                    (dollar_identifier))))))))
+      (declaration
+        (property_name)
+        (expression
+          (number_value
+            (integer_value)))
+        (expression
+          (number_value
+            (integer_value)))
+        (expression
+          (binary_expression
+            (expression
+              (string_value))
+            (expression
+              (parenthesized_expression
+                (expression
+                  (parenthesized_expression
+                    (expression
+                      (binary_expression
+                        (expression
+                          (variable_name
+                            (dollar_identifier)))
+                        (expression
+                          (parenthesized_expression
+                            (expression
+                              (binary_expression
+                                (expression
+                                  (variable_name
+                                    (dollar_identifier)))
+                                (expression
+                                  (number_value
+                                    (integer_value)))))))))))
+                (expression
+                  (parenthesized_expression
+                    (expression
+                      (variable_name
+                        (dollar_identifier)))))))))))))
+
+==================
+calls through variables
+==================
+text_style()
+  color red
+flat_style($text_fn = text_style)
+  $text_fn()
+.a
+  flat_style()
+---
+
+(stylesheet
+  (function_statement
+    (function_name)
+    (parameters)
+    (block
+      (declaration
+        (property_name)
+        (expression
+          (variable_name
+            (identifier))))))
+  (function_statement
+    (function_name)
+    (parameters
+      (parameter
+        (variable_name
+          (dollar_identifier))
+        (expression
+          (variable_name
+            (identifier)))))
+    (block
+      (expression_statement
+        (expression
+          (call_expression
+            (function_name)
+            (arguments))))))
+  (rule_set
+    (selector_list
+      (selector
+        (class_name)))
+    (block
+      (expression_statement
+        (expression
+          (call_expression
+            (function_name)
+            (arguments)))))))
+
+==================
+continued values
+==================
+.a
+  grid-template-areas "a a b"\
+    "c d e"\
+    "f f f"
+.b
+  color blue
+---
+
+(stylesheet
+  (rule_set
+    (selector_list
+      (selector
+        (class_name)))
+    (block
+      (declaration
+        (property_name)
+        (expression
+          (string_value))
+        (expression
+          (string_value))
+        (expression
+          (string_value)))))
+  (rule_set
+    (selector_list
+      (selector
+        (class_name)))
+    (block
+      (declaration
+        (property_name)
+        (expression
+          (variable_name
+            (identifier)))))))
+
+==================
+percentage casts and arithmetic
+==================
+$width = 100
+.a
+  width (2000 / $width) %
+  height (20 / 2)%
+  opacity (1 - .5)
+  order (9 % 2)
+---
+
+(stylesheet
+  (assignment
+    (variable_name
+      (dollar_identifier))
+    (expression
+      (number_value
+        (integer_value))))
+  (rule_set
+    (selector_list
+      (selector
+        (class_name)))
+    (block
+      (declaration
+        (property_name)
+        (expression
+          (cast_expression
+            (parenthesized_expression
+              (expression
+                (binary_expression
+                  (expression
+                    (number_value
+                      (integer_value)))
+                  (expression
+                    (variable_name
+                      (dollar_identifier))))))
+            (unit))))
+      (declaration
+        (property_name)
+        (expression
+          (cast_expression
+            (parenthesized_expression
+              (expression
+                (binary_expression
+                  (expression
+                    (number_value
+                      (integer_value)))
+                  (expression
+                    (number_value
+                      (integer_value))))))
+            (unit))))
+      (declaration
+        (property_name)
+        (expression
+          (parenthesized_expression
+            (expression
+              (binary_expression
+                (expression
+                  (number_value
+                    (integer_value)))
+                (expression
+                  (number_value
+                    (float_value))))))))
+      (declaration
+        (property_name)
+        (expression
+          (parenthesized_expression
+            (expression
+              (binary_expression
+                (expression
+                  (number_value
+                    (integer_value)))
+                (expression
+                  (number_value
+                    (integer_value)))))))))))
+
+==================
+mixed root indentation
+==================
+
+  @import "./tokens"
+  .a
+    color red
+.b
+  color blue
+---
+
+(stylesheet
+  (import_statement
+    (string_value))
+  (rule_set
+    (selector_list
+      (selector
+        (class_name)))
+    (block
+      (declaration
+        (property_name)
+        (expression
+          (variable_name
+            (identifier))))))
+  (rule_set
+    (selector_list
+      (selector
+        (class_name)))
+    (block
+      (declaration
+        (property_name)
+        (expression
+          (variable_name
+            (identifier)))))))
+
+==================
+comment-only indentation
+==================
+/*.row*/
+  /*background red*/
+.a
+    // indented comment
+  color red
+    /* multiline
+       comment */
+  width 1px
+---
+
+(stylesheet
+  (comment)
+  (comment)
+  (rule_set
+    (selector_list
+      (selector
+        (class_name)))
+    (block
+      (comment)
+      (declaration
+        (property_name)
+        (expression
+          (variable_name
+            (identifier))))
+      (comment)
+      (declaration
+        (property_name)
+        (expression
+          (number_value
+            (integer_value)
+            (unit)))))))
+
+==================
+combined deep selectors
+==================
+.a > /deep/ .label
+  color red
+.b > >>> .label
+  color blue
+---
+
+(stylesheet
+  (rule_set
+    (selector_list
+      (selector
+        (class_name)
+        (combinator_selector
+          (combinator)
+          (deep_combinator))
+        (class_name)))
+    (block
+      (declaration
+        (property_name)
+        (expression
+          (variable_name
+            (identifier))))))
+  (rule_set
+    (selector_list
+      (selector
+        (class_name)
+        (combinator_selector
+          (combinator)
+          (deep_combinator))
+        (class_name)))
+    (block
+      (declaration
+        (property_name)
+        (expression
+          (variable_name
+            (identifier)))))))
+
+==================
+prefixed keyframes
+==================
+@-webkit-keyframes blink {
+  0% { color: #fff; }
+  100% { color: rgba(255, 255, 255, 0); }
+}
+@keyframes blink
+  from
+    opacity 0
+---
+
+(stylesheet
+  (keyframes_statement
+    (at_keyword)
+    (keyframes_name)
+    (keyframes_block
+      (keyframe_block
+        (keyframe_selector
+          (number_value
+            (integer_value)
+            (unit)))
+        (css_declaration_block
+          (declaration
+            (property_name)
+            (color_value))))
+      (keyframe_block
+        (keyframe_selector
+          (number_value
+            (integer_value)
+            (unit)))
+        (css_declaration_block
+          (declaration
+            (property_name)
+            (raw_css_function))))))
+  (keyframes_statement
+    (keyframes_name)
+    (block
+      (rule_set
+        (nested_selector_list
+          (nested_selector
+            (tag_name)))
+        (block
+          (declaration
+            (property_name)
+            (expression
+              (number_value
+                (integer_value)))))))))
+
+==================
+HEX-like IDs and colors
+==================
+paint(color = #fff)
+  background color
+#add_num
+  color #add
+#abcdefabc
+  color #abcdef
+#abc
+// comment before the body
+  background #abcd
+---
+
+(stylesheet
+  (function_statement
+    (function_name)
+    (parameters
+      (parameter
+        (variable_name
+          (identifier))
+        (expression
+          (color_value))))
+    (block
+      (declaration
+        (property_name)
+        (expression
+          (variable_name
+            (identifier))))))
+  (rule_set
+    (selector_list
+      (selector
+        (id_name)))
+    (block
+      (declaration
+        (property_name)
+        (expression
+          (color_value)))))
+  (rule_set
+    (selector_list
+      (selector
+        (id_name)))
+    (block
+      (declaration
+        (property_name)
+        (expression
+          (color_value)))))
+  (rule_set
+    (selector_list
+      (selector
+        (id_name)))
+    (block
+      (comment)
+      (declaration
+        (property_name)
+        (expression
+          (color_value))))))

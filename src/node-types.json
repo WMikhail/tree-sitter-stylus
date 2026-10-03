@@ -475,7 +475,7 @@
         "required": true,
         "types": [
           {
-            "type": "expression",
+            "type": "parenthesized_expression",
             "named": true
           }
         ]
@@ -505,6 +505,10 @@
         },
         {
           "type": "combinator",
+          "named": true
+        },
+        {
+          "type": "deep_combinator",
           "named": true
         },
         {
@@ -1440,9 +1444,13 @@
       }
     },
     "children": {
-      "multiple": false,
+      "multiple": true,
       "required": true,
       "types": [
+        {
+          "type": "at_keyword",
+          "named": true
+        },
         {
           "type": "block",
           "named": true
@@ -1905,7 +1913,7 @@
     "named": true,
     "fields": {},
     "children": {
-      "multiple": false,
+      "multiple": true,
       "required": true,
       "types": [
         {
@@ -2563,6 +2571,10 @@
   },
   {
     "type": ":=",
+    "named": false
+  },
+  {
+    "type": ";",
     "named": false
   },
   {

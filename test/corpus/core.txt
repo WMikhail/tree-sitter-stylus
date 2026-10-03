@@ -1369,8 +1369,7 @@ Comma-separated values and brace keyframes
             (raw_css_value))
           (declaration
             (property_name)
-            (raw_css_function)
-            (raw_css_value))))
+            (raw_css_function))))
       (keyframe_block
         (keyframe_selector
           (number_value
@@ -1646,14 +1645,15 @@ body
         (property_name)
         (expression
           (cast_expression
-            (expression
-              (binary_expression
-                (expression
-                  (number_value
-                    (integer_value)))
-                (expression
-                  (number_value
-                    (integer_value)))))
+            (parenthesized_expression
+              (expression
+                (binary_expression
+                  (expression
+                    (number_value
+                      (integer_value)))
+                  (expression
+                    (number_value
+                      (integer_value))))))
             (unit))))
       (declaration
         (property_name)
@@ -1852,5 +1852,4 @@ Generic at-rules and CSS literals
         (css_declaration_block
           (declaration
             (property_name)
-            (raw_css_function)
-            (raw_css_value)))))))
+            (raw_css_function)))))))

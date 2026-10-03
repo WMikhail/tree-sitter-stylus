@@ -28,10 +28,14 @@ module.exports = grammar({
     $.pseudo_class,
     $._selector_plus,
     $._selector_tilde,
+    $.id_name,
+    $.color_value,
+    $._declaration_colon,
   ],
 
   extras: $ => [
     /[ \t\f;]+/,
+    /\\\r?\n[ \t]*/,
     $.comment,
   ],
 
@@ -193,7 +197,7 @@ module.exports = grammar({
 
     group_declaration: $ => prec.dynamic(15, prec.right(seq(
       field('property', alias($.nested_property_name, $.property_name)),
-      ':',
+      choice(':', alias($._declaration_colon, ':')),
       $._declaration_values,
     ))),
 
@@ -307,7 +311,7 @@ module.exports = grammar({
     ),
 
     keyframes_statement: $ => seq(
-      choice('@keyframes', 'keyframes'),
+      choice('@keyframes', 'keyframes', alias(token(/@-(webkit|moz|o|ms)-keyframes/), $.at_keyword)),
       field('name', choice(
         alias($.identifier, $.keyframes_name),
         $.interpolation,
@@ -380,11 +384,11 @@ module.exports = grammar({
         $.nesting_selector,
         $.universal_selector,
         $.selector_interpolation,
+        $.deep_combinator,
       ),
     ))),
 
     class_name: $ => token(seq('.', /-?[_a-zA-Z][\w-]*/)),
-    id_name: $ => token(prec(-1, seq('#', /-?[_a-zA-Z][\w-]*/))),
     pseudo_element: $ => token(seq('::', /-?[_a-zA-Z][\w-]*/)),
     nesting_selector_with_suffix: $ => seq(
       $.nesting_selector,
@@ -447,12 +451,10 @@ module.exports = grammar({
     )),
 
     cast_expression: $ => prec(PREC.CALL, seq(
-      '(',
-      field('value', $.expression),
-      ')',
+      field('value', $.parenthesized_expression),
       field('unit', choice(
         $.unit,
-        alias(token.immediate('%'), $.unit),
+        alias('%', $.unit),
       )),
     )),
 
@@ -505,7 +507,7 @@ module.exports = grammar({
     raw_css_function: $ => token(prec(3, /-?[_a-zA-Z][\w.:-]*\([^()\n]*\)/)),
 
     call_expression: $ => prec.dynamic(20, prec(PREC.CALL, seq(
-      field('function', alias($.identifier, $.function_name)),
+      field('function', choice(alias($.identifier, $.function_name), alias($.dollar_identifier, $.function_name))),
       field('arguments', $.arguments),
     ))),
 
@@ -696,7 +698,7 @@ module.exports = grammar({
       $.parenthesized_expression,
     ),
 
-    parenthesized_expression: $ => seq('(', $.expression, ')'),
+    parenthesized_expression: $ => seq('(', repeat1($.expression), ')'),
 
     member_expression: $ => prec(PREC.CALL, seq(
       field('object', $.variable_name),
@@ -713,7 +715,7 @@ module.exports = grammar({
     number_value: $ => prec.right(choice(
       seq(
         choice($.float_value, $.integer_value),
-        alias('%', $.unit),
+        alias(token.immediate('%'), $.unit),
       ),
       seq(
         choice($.float_value, $.integer_value),
@@ -774,12 +776,6 @@ module.exports = grammar({
     boolean_value: $ => choice('true', 'false', 'yes', 'no'),
     null_value: $ => choice('null', 'nil'),
     important_modifier: $ => token(seq('!', 'important')),
-    color_value: $ => token(prec(1, choice(
-      /#[0-9a-fA-F]{3}/,
-      /#[0-9a-fA-F]{4}/,
-      /#[0-9a-fA-F]{6}/,
-      /#[0-9a-fA-F]{8}/,
-    ))),
 
     string_value: $ => choice(
       seq('"', repeat(choice(
@@ -794,7 +790,7 @@ module.exports = grammar({
 
     escape_sequence: $ => token(seq('\\', /./)),
 
-    raw_css_value: $ => token(prec(1, /[^:(),"\'\/\s][^(),"\'\/\n]*/)),
+    raw_css_value: $ => token(prec(1, /[^:(),;{}"\'\/\s][^(),;{}"\'\/\n]*/)),
 
     keyframes_block: $ => seq(
       '{',
@@ -829,8 +825,9 @@ module.exports = grammar({
 
     css_declaration: $ => prec.dynamic(20, prec.right(seq(
       field('property', declarationProperty($)),
-      optional(':'),
+      optional(choice(':', alias($._declaration_colon, ':'))),
       $._css_declaration_values,
+      optional(';'),
       optional($._newline),
     ))),
 
@@ -909,7 +906,7 @@ function selectorSequence($) {
 function declarationRule($, property, optionalColon = true) {
   const parts = [field('property', property)];
   if (optionalColon) {
-    parts.push(optional(':'));
+    parts.push(optional(choice(':', alias($._declaration_colon, ':'))));
   }
   parts.push($._declaration_values);
   return seq(...parts);

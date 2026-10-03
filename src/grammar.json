@@ -580,8 +580,22 @@
                   "type": "CHOICE",
                   "members": [
                     {
-                      "type": "STRING",
-                      "value": ":"
+                      "type": "CHOICE",
+                      "members": [
+                        {
+                          "type": "STRING",
+                          "value": ":"
+                        },
+                        {
+                          "type": "ALIAS",
+                          "content": {
+                            "type": "SYMBOL",
+                            "name": "_declaration_colon"
+                          },
+                          "named": false,
+                          "value": ":"
+                        }
+                      ]
                     },
                     {
                       "type": "BLANK"
@@ -614,8 +628,22 @@
                   "type": "CHOICE",
                   "members": [
                     {
-                      "type": "STRING",
-                      "value": ":"
+                      "type": "CHOICE",
+                      "members": [
+                        {
+                          "type": "STRING",
+                          "value": ":"
+                        },
+                        {
+                          "type": "ALIAS",
+                          "content": {
+                            "type": "SYMBOL",
+                            "name": "_declaration_colon"
+                          },
+                          "named": false,
+                          "value": ":"
+                        }
+                      ]
                     },
                     {
                       "type": "BLANK"
@@ -648,8 +676,22 @@
                   "type": "CHOICE",
                   "members": [
                     {
-                      "type": "STRING",
-                      "value": ":"
+                      "type": "CHOICE",
+                      "members": [
+                        {
+                          "type": "STRING",
+                          "value": ":"
+                        },
+                        {
+                          "type": "ALIAS",
+                          "content": {
+                            "type": "SYMBOL",
+                            "name": "_declaration_colon"
+                          },
+                          "named": false,
+                          "value": ":"
+                        }
+                      ]
                     },
                     {
                       "type": "BLANK"
@@ -711,8 +753,22 @@
               }
             },
             {
-              "type": "STRING",
-              "value": ":"
+              "type": "CHOICE",
+              "members": [
+                {
+                  "type": "STRING",
+                  "value": ":"
+                },
+                {
+                  "type": "ALIAS",
+                  "content": {
+                    "type": "SYMBOL",
+                    "name": "_declaration_colon"
+                  },
+                  "named": false,
+                  "value": ":"
+                }
+              ]
             },
             {
               "type": "SYMBOL",
@@ -1473,6 +1529,18 @@
             {
               "type": "STRING",
               "value": "keyframes"
+            },
+            {
+              "type": "ALIAS",
+              "content": {
+                "type": "TOKEN",
+                "content": {
+                  "type": "PATTERN",
+                  "value": "@-(webkit|moz|o|ms)-keyframes"
+                }
+              },
+              "named": true,
+              "value": "at_keyword"
             }
           ]
         },
@@ -2089,6 +2157,10 @@
                 {
                   "type": "SYMBOL",
                   "name": "selector_interpolation"
+                },
+                {
+                  "type": "SYMBOL",
+                  "name": "deep_combinator"
                 }
               ]
             }
@@ -2110,26 +2182,6 @@
             "value": "-?[_a-zA-Z][\\w-]*"
           }
         ]
-      }
-    },
-    "id_name": {
-      "type": "TOKEN",
-      "content": {
-        "type": "PREC",
-        "value": -1,
-        "content": {
-          "type": "SEQ",
-          "members": [
-            {
-              "type": "STRING",
-              "value": "#"
-            },
-            {
-              "type": "PATTERN",
-              "value": "-?[_a-zA-Z][\\w-]*"
-            }
-          ]
-        }
       }
     },
     "pseudo_element": {
@@ -2523,20 +2575,12 @@
         "type": "SEQ",
         "members": [
           {
-            "type": "STRING",
-            "value": "("
-          },
-          {
             "type": "FIELD",
             "name": "value",
             "content": {
               "type": "SYMBOL",
-              "name": "expression"
+              "name": "parenthesized_expression"
             }
-          },
-          {
-            "type": "STRING",
-            "value": ")"
           },
           {
             "type": "FIELD",
@@ -2551,11 +2595,8 @@
                 {
                   "type": "ALIAS",
                   "content": {
-                    "type": "IMMEDIATE_TOKEN",
-                    "content": {
-                      "type": "STRING",
-                      "value": "%"
-                    }
+                    "type": "STRING",
+                    "value": "%"
                   },
                   "named": true,
                   "value": "unit"
@@ -2790,13 +2831,27 @@
               "type": "FIELD",
               "name": "function",
               "content": {
-                "type": "ALIAS",
-                "content": {
-                  "type": "SYMBOL",
-                  "name": "identifier"
-                },
-                "named": true,
-                "value": "function_name"
+                "type": "CHOICE",
+                "members": [
+                  {
+                    "type": "ALIAS",
+                    "content": {
+                      "type": "SYMBOL",
+                      "name": "identifier"
+                    },
+                    "named": true,
+                    "value": "function_name"
+                  },
+                  {
+                    "type": "ALIAS",
+                    "content": {
+                      "type": "SYMBOL",
+                      "name": "dollar_identifier"
+                    },
+                    "named": true,
+                    "value": "function_name"
+                  }
+                ]
               }
             },
             {
@@ -4277,8 +4332,11 @@
           "value": "("
         },
         {
-          "type": "SYMBOL",
-          "name": "expression"
+          "type": "REPEAT1",
+          "content": {
+            "type": "SYMBOL",
+            "name": "expression"
+          }
         },
         {
           "type": "STRING",
@@ -4387,8 +4445,11 @@
               {
                 "type": "ALIAS",
                 "content": {
-                  "type": "STRING",
-                  "value": "%"
+                  "type": "IMMEDIATE_TOKEN",
+                  "content": {
+                    "type": "STRING",
+                    "value": "%"
+                  }
                 },
                 "named": true,
                 "value": "unit"
@@ -4722,34 +4783,6 @@
         ]
       }
     },
-    "color_value": {
-      "type": "TOKEN",
-      "content": {
-        "type": "PREC",
-        "value": 1,
-        "content": {
-          "type": "CHOICE",
-          "members": [
-            {
-              "type": "PATTERN",
-              "value": "#[0-9a-fA-F]{3}"
-            },
-            {
-              "type": "PATTERN",
-              "value": "#[0-9a-fA-F]{4}"
-            },
-            {
-              "type": "PATTERN",
-              "value": "#[0-9a-fA-F]{6}"
-            },
-            {
-              "type": "PATTERN",
-              "value": "#[0-9a-fA-F]{8}"
-            }
-          ]
-        }
-      }
-    },
     "string_value": {
       "type": "CHOICE",
       "members": [
@@ -4842,7 +4875,7 @@
         "value": 1,
         "content": {
           "type": "PATTERN",
-          "value": "[^:(),\"\\'\\/\\s][^(),\"\\'\\/\\n]*"
+          "value": "[^:(),;{}\"\\'\\/\\s][^(),;{}\"\\'\\/\\n]*"
         }
       }
     },
@@ -5087,8 +5120,22 @@
               "type": "CHOICE",
               "members": [
                 {
-                  "type": "STRING",
-                  "value": ":"
+                  "type": "CHOICE",
+                  "members": [
+                    {
+                      "type": "STRING",
+                      "value": ":"
+                    },
+                    {
+                      "type": "ALIAS",
+                      "content": {
+                        "type": "SYMBOL",
+                        "name": "_declaration_colon"
+                      },
+                      "named": false,
+                      "value": ":"
+                    }
+                  ]
                 },
                 {
                   "type": "BLANK"
@@ -5098,6 +5145,18 @@
             {
               "type": "SYMBOL",
               "name": "_css_declaration_values"
+            },
+            {
+              "type": "CHOICE",
+              "members": [
+                {
+                  "type": "STRING",
+                  "value": ";"
+                },
+                {
+                  "type": "BLANK"
+                }
+              ]
             },
             {
               "type": "CHOICE",
@@ -5266,6 +5325,10 @@
       "value": "[ \\t\\f;]+"
     },
     {
+      "type": "PATTERN",
+      "value": "\\\\\\r?\\n[ \\t]*"
+    },
+    {
       "type": "SYMBOL",
       "name": "comment"
     }
@@ -5386,6 +5449,18 @@
     {
       "type": "SYMBOL",
       "name": "_selector_tilde"
+    },
+    {
+      "type": "SYMBOL",
+      "name": "id_name"
+    },
+    {
+      "type": "SYMBOL",
+      "name": "color_value"
+    },
+    {
+      "type": "SYMBOL",
+      "name": "_declaration_colon"
     }
   ],
   "inline": [],
