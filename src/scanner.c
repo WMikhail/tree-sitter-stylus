@@ -98,7 +98,23 @@ static bool scan_comment(TSLexer *lexer) {
 
 static bool line_opens_block(Scanner *scanner, TSLexer *lexer, bool selector_list) {
   bool trailing_comma = false;
+  int32_t quote = 0;
+  bool escaped = false;
   while (!lexer->eof(lexer) && !is_newline(lexer->lookahead)) {
+    if (quote != 0) {
+      int32_t character = lexer->lookahead;
+      advance(lexer);
+      if (escaped) escaped = false;
+      else if (character == '\\') escaped = true;
+      else if (character == quote) quote = 0;
+      continue;
+    }
+    if (lexer->lookahead == '\'' || lexer->lookahead == '"') {
+      quote = lexer->lookahead;
+      trailing_comma = false;
+      advance(lexer);
+      continue;
+    }
     if (lexer->lookahead == '/' && scan_comment(lexer)) continue;
     if (lexer->lookahead == '{') return true;
     if (lexer->lookahead != ' ' && lexer->lookahead != '\t' && lexer->lookahead != '\f') {

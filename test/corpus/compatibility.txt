@@ -664,3 +664,65 @@ paint(color = #fff)
         (property_name)
         (expression
           (color_value))))))
+
+==================
+braces in declaration strings
+==================
+.a
+  content:counter(item) "{";
+  font-family:Arial, '{';
+  content:counter(item) "http://a/{";
+  width:100%;
+.b
+  color blue
+---
+
+(stylesheet
+  (rule_set
+    (selector_list
+      (selector
+        (class_name)))
+    (block
+      (declaration
+        (property_name)
+        (call_expression
+          (function_name)
+          (arguments
+            (expression
+              (variable_name
+                (identifier)))))
+        (expression
+          (string_value)))
+      (declaration
+        (property_name)
+        (expression
+          (variable_name
+            (identifier)))
+        (expression
+          (string_value)))
+      (declaration
+        (property_name)
+        (call_expression
+          (function_name)
+          (arguments
+            (expression
+              (variable_name
+                (identifier)))))
+        (expression
+          (string_value)))
+      (declaration
+        (property_name)
+        (expression
+          (number_value
+            (integer_value)
+            (unit))))))
+  (rule_set
+    (selector_list
+      (selector
+        (class_name)))
+    (block
+      (declaration
+        (property_name)
+        (expression
+          (variable_name
+            (identifier)))))))
