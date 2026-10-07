@@ -41,6 +41,8 @@ module.exports = grammar({
 
   word: $ => $.identifier,
 
+  inline: $ => [$._identifier],
+
   conflicts: $ => [
     // Statement termination is indentation-sensitive, so the final statement
     // in a block can be valid both with and without an explicit newline.
@@ -241,8 +243,8 @@ module.exports = grammar({
 
     each_statement: $ => seq(
       'each',
-      field('item', $.identifier),
-      optional(seq(',', field('index', $.identifier))),
+      field('item', $._identifier),
+      optional(seq(',', field('index', $._identifier))),
       'in',
       field('iterable', $.expression),
       $.block,
@@ -251,8 +253,8 @@ module.exports = grammar({
     for_statement: $ => choice(
       prec.dynamic(1, seq(
         'for',
-        field('item', $.identifier),
-        optional(seq(',', field('index', $.identifier))),
+        field('item', $._identifier),
+        optional(seq(',', field('index', $._identifier))),
         'in',
         field('iterable', $.expression),
         repeat(seq(optional(','), field('iterable', $.expression))),
@@ -294,8 +296,8 @@ module.exports = grammar({
 
     postfix_for_clause: $ => seq(
       'for',
-      field('item', $.identifier),
-      optional(seq(',', field('index', $.identifier))),
+      field('item', $._identifier),
+      optional(seq(',', field('index', $._identifier))),
       'in',
       field('iterable', $.expression),
       repeat(seq(optional(','), field('iterable', $.expression))),
@@ -507,7 +509,7 @@ module.exports = grammar({
     raw_css_function: $ => token(prec(3, /-?[_a-zA-Z][\w.:-]*\([^()\n]*\)/)),
 
     call_expression: $ => prec.dynamic(20, prec(PREC.CALL, seq(
-      field('function', choice(alias($.identifier, $.function_name), alias($.dollar_identifier, $.function_name))),
+      field('function', choice(alias($._identifier, $.function_name), alias($.dollar_identifier, $.function_name))),
       field('arguments', $.arguments),
     ))),
 
@@ -752,7 +754,7 @@ module.exports = grammar({
       'ms',
     ))),
     variable_name: $ => choice(
-      $.identifier,
+      $._identifier,
       $.dollar_identifier,
     ),
     property_lookup: $ => /@-?[_a-zA-Z][\w-]*/,
@@ -845,6 +847,8 @@ module.exports = grammar({
       $.raw_css_value,
     ),
 
+    _identifier: $ => choice($.identifier, alias($.nested_property_name, $.identifier)),
+
     identifier: $ => /-?[_a-zA-Z][\w-]*/,
 
     comment: $ => token(choice(
@@ -872,7 +876,7 @@ function queriedBlock($, keyword) {
 
 function functionDefinition($) {
   return prec.dynamic(30, prec(PREC.CALL + 1, seq(
-    field('name', alias($.identifier, $.function_name)),
+    field('name', alias($._identifier, $.function_name)),
     field('parameters', $.parameters),
     $.block,
   )));

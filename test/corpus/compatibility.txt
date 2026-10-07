@@ -1,4 +1,70 @@
 ==================
+property-named mixins and calls
+==================
+font($a, $b = normal)
+  font-family $a
+
+after-mix()
+  color red
+
+font("Arial")
+.a
+  font("Arial")
+  after-mix()
+---
+
+(stylesheet
+  (function_statement
+    (function_name)
+    (parameters
+      (parameter
+        (variable_name
+          (dollar_identifier)))
+      (parameter
+        (variable_name
+          (dollar_identifier))
+        (expression
+          (variable_name
+            (identifier)))))
+    (block
+      (declaration
+        (property_name)
+        (expression
+          (variable_name
+            (dollar_identifier))))))
+  (function_statement
+    (function_name)
+    (parameters)
+    (block
+      (declaration
+        (property_name)
+        (expression
+          (variable_name
+            (identifier))))))
+  (call_expression
+    (function_name)
+    (arguments
+      (expression
+        (string_value))))
+  (rule_set
+    (selector_list
+      (selector
+        (class_name)))
+    (block
+      (expression_statement
+        (expression
+          (call_expression
+            (function_name)
+            (arguments
+              (expression
+                (string_value))))))
+      (expression_statement
+        (expression
+          (call_expression
+            (function_name)
+            (arguments)))))))
+
+==================
 semicolons and dedents
 ==================
 @import "./tokens";

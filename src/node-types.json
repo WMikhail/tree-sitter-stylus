@@ -1277,6 +1277,11 @@
     }
   },
   {
+    "type": "identifier",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "if_statement",
     "named": true,
     "fields": {
@@ -2752,10 +2757,6 @@
   },
   {
     "type": "id_name",
-    "named": true
-  },
-  {
-    "type": "identifier",
     "named": true
   },
   {
